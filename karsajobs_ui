@@ -1,0 +1,78 @@
+version: 2.1
+jobs:
+  lint-dockerfile:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      # Install hadolint
+      - run:
+          name: Install hadolint
+          command: |
+            sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.7.0/hadolint-Linux-x86_64
+            sudo chmod +x /bin/hadolint
+      # Run hadolint against Dockerfile
+      - run:
+          name: Lint Dockerfile
+          command: hadolint Dockerfile
+    filters:
+      branches:
+        only: karsajobs-ui
+
+  build-app-karsajobs-ui:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      # Build and push image here
+      - run:
+          name: Build and push image
+          command: |
+            # Replace these commands with your actual build and push steps
+            echo 'Building and pushing image...'
+            # Example commands:
+            docker build -t your-image-name .
+            docker push your-image-name
+    filters:
+      branches:
+        only: karsajobs-ui
+
+  test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      # Replace this with a real test runner invocation
+      - run:
+          name: Run tests
+          command: echo 'replace me with real tests!' && false
+    filters:
+      branches:
+        only: karsajobs-ui
+
+  deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      # Replace this with steps to deploy to users
+      - run:
+          name: deploy
+          command: '#e.g. ./deploy.sh'
+    filters:
+      branches:
+        only: karsajobs-ui
+
+workflows:
+  version: 2
+  example:
+    jobs:
+      - lint-dockerfile
+      - build-app-karsajobs-ui:
+          requires:
+            - lint-dockerfile
+      - test:
+          requires:
+            - lint-dockerfile
+      - deploy:
+          requires:
+            - build-app-karsajobs-ui
