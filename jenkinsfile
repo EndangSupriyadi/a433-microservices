@@ -30,6 +30,6 @@ pipeline {
                     sh 'docker push your-image-name'
                 }
             }
-        }
+        } 
     }
 }
