@@ -19,15 +19,20 @@ pipeline {
             }
         }
         
-        stage('Build and Push Image') {
+        stage('Build and Push Docker Image') {
             when {
                 branch 'karsajobs-ui'
             }
             steps {
                 script {
-                    // Build and push Docker image
+                    // Build Docker image
                     sh 'docker build -t karsajobs-ui .'
-                    sh 'docker push karsajobs-ui'
+                    
+                    // Tag Docker image
+                    sh 'docker tag karsajobs-ui:latest karsajobs-ui/karsajobs-ui:latest'
+                    
+                    // Push Docker image
+                    sh 'docker push karsajobs-ui/karsajobs-ui:latest'
                 }
             }
         }
