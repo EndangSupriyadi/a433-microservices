@@ -36,8 +36,8 @@ pipeline {
             steps {
                 script {
                     // Build dan push image di sini
-                    sh 'docker build -t karsajobs-backend .'
-                    sh 'docker push karsajobs-backend'
+                    sh 'docker build -t karsajobs .'
+                    sh 'docker push karsajobs'
                 }
             }
         }
