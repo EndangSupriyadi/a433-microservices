@@ -8,30 +8,24 @@ pipeline {
             }
             steps {
                 script {
-                    // Instal hadolint
+                    // Install hadolint
                     sh '''
                         wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.3.0/hadolint-Linux-x86_64
                         chmod +x hadolint
                     '''
-                    // Jalankan hadolint terhadap Dockerfile
+                    // Run hadolint on Dockerfile
                     sh './hadolint Dockerfile'
                 }
             }
         }
         
-        stage('Build') {
-            steps {
-                sh 'npm install'
-            }
-        }
-        
-        stage('Build and Push Docker Image') {
+        stage('Build and Push Image') {
             when {
                 branch 'karsajobs-ui'
             }
             steps {
                 script {
-                    // Build and push Docker image here
+                    // Build and push Docker image
                     sh 'docker build -t karsajobs-ui .'
                     sh 'docker push karsajobs-ui'
                 }
